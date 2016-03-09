@@ -195,7 +195,7 @@ namespace :deploy do
     end
   end
 
-  desc "Revert to previous release timestamp"
+  desc "Revert to previous release name"
   task :revert_release => :rollback_release_path do
     on release_roles(:all) do
       set(:revision_log_message, rollback_log_message)
@@ -214,8 +214,17 @@ namespace :deploy do
         exit 1
       end
       last_release = releases[1]
-      set_release_path(last_release)
-      set(:rollback_timestamp, last_release)
+
+      sub_releases = capture(:ls, "-xt", File.join(releases_path, last_release)).split
+      if sub_releases.count < 2
+        error t(:cannot_rollback)
+        exit 1
+      end
+      last_sub_release = sub_releases[1]
+      last_full_release = "#{last_release}/#{last_sub_release}"
+
+      set_release_path(last_full_release)
+      set(:rollback_name, last_full_release)
     end
   end
 

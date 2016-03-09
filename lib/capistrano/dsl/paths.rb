@@ -11,20 +11,23 @@ module Capistrano
       end
 
       def current_path
-        deploy_path.join("current")
+        deploy_path.join(fetch(:current_dir, 'current'))
       end
 
       def releases_path
-        deploy_path.join("releases")
+        deploy_path.join(fetch(:release_dir, 'releases'))
       end
 
       def release_path
         fetch(:release_path, current_path)
       end
 
-      def set_release_path(timestamp=now)
-        set(:release_timestamp, timestamp)
-        set(:release_path, releases_path.join(timestamp))
+      def set_release_path(name = nil)
+        if name.nil?
+          set(:release_path, releases_path.join(fetch(:release_name)))
+        else
+          set(:release_path, releases_path.join(name))
+        end
       end
 
       def stage_config_path
@@ -57,19 +60,11 @@ module Capistrano
       end
 
       def shared_path
-        deploy_path.join("shared")
+        deploy_path.join(fetch(:shared_dir, 'shared'))
       end
 
       def revision_log
-        deploy_path.join("revisions.log")
-      end
-
-      def now
-        env.timestamp.strftime("%Y%m%d%H%M%S")
-      end
-
-      def asset_timestamp
-        env.timestamp.strftime("%Y%m%d%H%M.%S")
+        deploy_path.join(fetch(:revision_file, 'revision.log'))
       end
 
       def linked_dirs(parent)

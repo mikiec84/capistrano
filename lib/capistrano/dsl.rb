@@ -33,12 +33,12 @@ module Capistrano
               :branch => fetch(:branch),
               :user => local_user,
               :sha => fetch(:current_revision),
-              :release => fetch(:release_timestamp))
+              :release => fetch(:release_name))
            )
     end
 
     def rollback_log_message
-      t(:rollback_log_message, :user => local_user, :release => fetch(:rollback_timestamp))
+      t(:rollback_log_message, :user => local_user, :release => fetch(:rollback_name))
     end
 
     def local_user

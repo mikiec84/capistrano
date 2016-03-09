@@ -36,14 +36,6 @@ module Capistrano
       def env
         Configuration.env
       end
-
-      def release_timestamp
-        env.timestamp.strftime("%Y%m%d%H%M%S")
-      end
-
-      def asset_timestamp
-        env.timestamp.strftime("%Y%m%d%H%M.%S")
-      end
     end
   end
 end

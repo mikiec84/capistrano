@@ -101,23 +101,23 @@ describe Capistrano::DSL::Paths do
     let(:now) { Time.parse("Oct 21 16:29:00 2015") }
     subject { dsl.release_path }
 
-    context "without a timestamp" do
+    context "with a name set in env" do
       before do
-        dsl.env.expects(:timestamp).returns(now)
+        dsl.set(:release_name, 'v0.1/v0.1.0')
         dsl.set_release_path
       end
 
-      it "returns the release path with the current env timestamp" do
-        expect(subject.to_s).to eq "/var/www/releases/20151021162900"
+      it "returns the release path with the name found in env" do
+        expect(subject.to_s).to eq "/var/www/releases/v0.1/v0.1.0"
       end
     end
 
-    context "with a timestamp" do
+    context "with a name given" do
       before do
         dsl.set_release_path("timestamp")
       end
 
-      it "returns the release path with the timestamp" do
+      it "returns the release path with the given name" do
         expect(subject.to_s).to eq "/var/www/releases/timestamp"
       end
     end
