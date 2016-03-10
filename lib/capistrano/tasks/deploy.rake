@@ -64,7 +64,7 @@ namespace :deploy do
     desc "Check shared and release directories exist"
     task :directories do
       on release_roles :all do
-        execute :mkdir, "-p", shared_path, releases_path
+        execute :mkdir, "-p", shared_path, releases_path, current_path
       end
     end
 
