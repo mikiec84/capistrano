@@ -215,16 +215,8 @@ namespace :deploy do
       end
       last_release = releases[1]
 
-      sub_releases = capture(:ls, "-xt", File.join(releases_path, last_release)).split
-      if sub_releases.count < 2
-        error t(:cannot_rollback)
-        exit 1
-      end
-      last_sub_release = sub_releases[1]
-      last_full_release = "#{last_release}/#{last_sub_release}"
-
-      set_release_path(last_full_release)
-      set(:rollback_name, last_full_release)
+      set_release_path(last_release)
+      set(:rollback_name, last_release)
     end
   end
 
